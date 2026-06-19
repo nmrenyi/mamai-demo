@@ -44,19 +44,28 @@ The demo is built to behave like the deployed on-device app, not better or worse
 - For bit-identical parity you'd serve the on-device `.litertlm` via the LiteRT-LM
   runtime instead of `llama-server` (heavier to stand up; not needed for feedback).
 
-> **Demonstration only — not medical advice.** The UI gates entry behind this notice.
+> **Demonstration only — not medical advice.** Shown as a persistent banner in the UI.
+
+## Features
+
+- Streaming chat grounded in the retrieved guideline chunks, with `[1] [2] [3]` citations.
+- **Click-through citations** — each citation opens its source PDF at the cited page
+  (`/docs/<source>.pdf#page=N`), matching the on-device app.
+- Persistent "not medical advice" caveat banner (no blocking entry gate).
+- Optional per-response feedback form — **feature-flagged and off in the deployment
+  image** (`MAMAI_ENABLE_FEEDBACK`); on for local dev.
 
 ## Architecture
 
 ```
-Browser (chat UI + disclaimer gate + per-response feedback form)
-   │  POST /api/chat  (SSE stream) · GET /docs/<source>.pdf#page=N
+Browser (chat · click-through citations · persistent "not medical advice" banner)
+   │  POST /api/chat (SSE stream) · GET /docs/<source>.pdf#page=N
    ▼
 FastAPI (backend/)
   ├ retrieval.py   EmbeddingGemma query embed → cosine top-3 over embeddings.sqlite
   ├ prompts.py     system_en.txt + context injection + Gemma IT template
-  ├ app.py         proxy → llama-server /completion (stream), feedback endpoints
-  └ feedback.py    SQLite: exchanges + feedback
+  ├ app.py         proxy → llama-server /completion (stream); serves source PDFs at /docs
+  └ feedback.py    SQLite store (feature-flagged; off in the deployment image)
    │
    ▼
 llama-server  (Q4_0 GGUF, Metal/CPU)
@@ -86,9 +95,15 @@ runs locally and in the cloud. Key vars: `MAMAI_LLAMA_URL`, `MAMAI_GGUF_MODEL`,
 
 ## Feedback data
 
-Stored in `feedback.sqlite` (gitignored):
+The feedback feature is **disabled in the deployment image** (`MAMAI_ENABLE_FEEDBACK=0`)
+because the hosted free tier has no durable storage yet — so the demo writes nothing.
+When enabled (local dev, or once a durable store is wired), it records to
+`feedback.sqlite` (gitignored):
 - `exchanges` — query, retrieved context, citations, full response per message.
 - `feedback` — clinician rating (1–5), issue tags, free-text comment, keyed by message.
+
+To persist feedback in the cloud, mount a writable `/data` volume (start.sh points the
+DB there automatically) or push records to a HF Dataset before flipping the flag on.
 
 ## Deployment
 

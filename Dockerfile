@@ -1,5 +1,5 @@
 # MAM-AI clinician-feedback demo — single-container image.
-# Stage 1 builds a static llama-server (CPU); stage 2 adds the Python app and
+# Stage 1 provides a prebuilt llama-server (CPU); stage 2 adds the Python app and
 # bakes the model assets into the image so cold-wake on HF Spaces is fast
 # (no 4.3 GB runtime download). Works on HF Spaces (Docker SDK) and any VPS.
 

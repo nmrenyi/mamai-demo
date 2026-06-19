@@ -6,7 +6,9 @@ Faithful to the deployed on-device app:
   - Gemma 3n E4B Q4_0 GGUF via llama-server (proxied here)
 
 New pieces (per the improvement-plan §5 demo spec):
-  - live retrieval endpoint, chat UI with a "demonstration only" gate, feedback form.
+  - live retrieval endpoint, chat UI, click-through source citations, a persistent
+    "not medical advice" banner, and an optional feedback form (flag-gated; off in
+    the deployment image).
 """
 
 import json

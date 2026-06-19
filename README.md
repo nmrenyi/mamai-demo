@@ -1,8 +1,8 @@
 ---
 title: MAM-AI Clinician Demo
 emoji: 🏥
-colorFrom: teal
-colorTo: blue
+colorFrom: blue
+colorTo: green
 sdk: docker
 app_port: 7860
 pinned: false

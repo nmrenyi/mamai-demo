@@ -189,7 +189,8 @@ async function send() {
   bubble.classList.remove("cursor-blink");
   bubble.innerHTML = renderMarkdown(acc);
   history.push({ role: "assistant", content: acc });
-  if (messageId) addFeedback(botEl.querySelector("div"), messageId);
+  const fbOn = !META || META.feedback_enabled !== false;
+  if (messageId && fbOn) addFeedback(botEl.querySelector("div"), messageId);
 
   busy = false; $("send-btn").disabled = false; $("input").focus();
 }

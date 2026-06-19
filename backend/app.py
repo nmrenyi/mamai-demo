@@ -33,7 +33,8 @@ FRONTEND_DIR = config.REPO_ROOT / "frontend"
 @app.on_event("startup")
 def _startup() -> None:
     global _retriever
-    feedback.init_db()
+    if config.ENABLE_FEEDBACK:
+        feedback.init_db()
     print("Loading EmbeddingGemma retriever + vector store…")
     _retriever = Retriever()
     print(f"Vector store ready: {len(_retriever.store)} chunks, dim={_retriever.store.dim}")
@@ -69,6 +70,7 @@ def meta() -> dict:
         "generator": config.GENERATOR_LABEL,
         "retriever": "EmbeddingGemma-300M (TFLite, query mode) · top-3 · threshold 0.0",
         "corpus": "rag-bundle-v0.3.0 · 63,650 chunks · 87 sources",
+        "feedback_enabled": config.ENABLE_FEEDBACK,
         "params": {"temperature": config.TEMPERATURE, "top_p": config.TOP_P,
                    "top_k": config.TOP_K, "n_ctx": config.N_CTX, "max_tokens": config.MAX_TOKENS},
         "caveats": [
@@ -150,10 +152,11 @@ async def chat(req: ChatRequest):
             return
 
         response_text = "".join(full).strip()
-        feedback.save_exchange(
-            message_id=message_id, session_id=session_id, query=latest_query,
-            history=history, context=context, citations=citations, response=response_text,
-        )
+        if config.ENABLE_FEEDBACK:
+            feedback.save_exchange(
+                message_id=message_id, session_id=session_id, query=latest_query,
+                history=history, context=context, citations=citations, response=response_text,
+            )
         yield _sse("done", {"message_id": message_id, "session_id": session_id})
 
     return StreamingResponse(stream(), media_type="text/event-stream",
@@ -163,7 +166,9 @@ async def chat(req: ChatRequest):
 # ---------------------------------------------------------------- feedback
 
 @app.post("/api/feedback")
-def submit_feedback(req: FeedbackRequest) -> dict:
+def submit_feedback(req: FeedbackRequest):
+    if not config.ENABLE_FEEDBACK:
+        return JSONResponse({"error": "feedback disabled"}, status_code=404)
     feedback.save_feedback(
         message_id=req.message_id, session_id=req.session_id, rating=req.rating,
         helpful=req.helpful, issues=req.issues, comment=req.comment,

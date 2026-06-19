@@ -40,6 +40,7 @@ RUN mkdir -p assets \
 # volume is mounted (paid Spaces / VPS); otherwise ephemeral in the container.
 ENV MAMAI_LLAMA_URL=http://127.0.0.1:8080 \
     PORT=7860 \
-    HF_HUB_DISABLE_TELEMETRY=1
+    HF_HUB_DISABLE_TELEMETRY=1 \
+    MAMAI_ENABLE_FEEDBACK=0
 EXPOSE 7860
 CMD ["bash", "deploy/start.sh"]

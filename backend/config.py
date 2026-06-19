@@ -28,6 +28,10 @@ GGUF_MODEL = _asset("gemma-3n-E4B-it-Q4_0.gguf", "MAMAI_GGUF_MODEL")
 # --- Feedback store ---
 FEEDBACK_DB = os.environ.get("MAMAI_FEEDBACK_DB", str(REPO_ROOT / "feedback.sqlite"))
 
+# Feature flag: feedback UI + logging. On by default (local dev); the Docker image
+# sets MAMAI_ENABLE_FEEDBACK=0 so the hosted demo hides it (no durable store yet).
+ENABLE_FEEDBACK = os.environ.get("MAMAI_ENABLE_FEEDBACK", "1").lower() not in ("0", "false", "no")
+
 # --- Generation params (config-v0.2.0 params.json; unchanged in deploy) ---
 TEMPERATURE = float(os.environ.get("MAMAI_TEMPERATURE", "1.0"))
 TOP_P = float(os.environ.get("MAMAI_TOP_P", "0.95"))

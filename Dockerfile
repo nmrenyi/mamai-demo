@@ -3,25 +3,18 @@
 # bakes the model assets into the image so cold-wake on HF Spaces is fast
 # (no 4.3 GB runtime download). Works on HF Spaces (Docker SDK) and any VPS.
 
-# ---------- stage 1: build llama-server (static, CPU) ----------
-FROM python:3.10-slim AS llama
-RUN apt-get update && apt-get install -y --no-install-recommends \
-      build-essential cmake git ca-certificates && rm -rf /var/lib/apt/lists/*
-RUN git clone --depth 1 https://github.com/ggml-org/llama.cpp /src
-WORKDIR /src
-# Static link so the single binary is self-contained; GGML_NATIVE=OFF + AVX2 for
-# a portable build (HF build host CPU features may differ from the runtime host).
-RUN cmake -B build -DCMAKE_BUILD_TYPE=Release \
-        -DLLAMA_CURL=OFF -DBUILD_SHARED_LIBS=OFF \
-        -DGGML_NATIVE=OFF -DGGML_AVX2=ON \
- && cmake --build build --config Release -j --target llama-server \
- && cp build/bin/llama-server /usr/local/bin/llama-server
+# ---------- stage 1: prebuilt llama-server (official multi-arch image) ----------
+# Copying the prebuilt binary (vs compiling) avoids an OOM-prone build and lets
+# HF's amd64 builder pull the matching arch automatically. /app holds the binary
+# plus its shared libs, including the dynamically-loaded libggml-cpu-* backends.
+FROM ghcr.io/ggml-org/llama.cpp:server AS llama
 
 # ---------- stage 2: runtime ----------
 FROM python:3.10-slim
 RUN apt-get update && apt-get install -y --no-install-recommends \
       libgomp1 curl ca-certificates && rm -rf /var/lib/apt/lists/*
-COPY --from=llama /usr/local/bin/llama-server /usr/local/bin/llama-server
+COPY --from=llama /app /opt/llama
+ENV PATH="/opt/llama:${PATH}" LD_LIBRARY_PATH="/opt/llama"
 
 WORKDIR /app
 COPY requirements.txt .

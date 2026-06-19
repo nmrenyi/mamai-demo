@@ -13,22 +13,12 @@ const SUGGESTIONS = [
   "A 2-year-old is choking — what do I do?",
 ];
 
-// ---------- disclaimer gate ----------
-$("agree-box").addEventListener("change", (e) => { $("enter-btn").disabled = !e.target.checked; });
-$("enter-btn").addEventListener("click", () => {
-  $("gate").classList.add("hidden");
-  $("app").classList.remove("hidden");
-  $("input").focus();
-});
-
 // ---------- meta / caveats ----------
 async function loadMeta() {
   try {
     META = await (await fetch("/api/meta")).json();
     $("stack-meta").textContent = `${META.generator} · ${META.retriever}`;
     $("caveat-banner").textContent = "⚠ " + META.caveats.join("  ·  ");
-    $("gate-fidelity").textContent =
-      `Mirrors: ${META.stack}. Generator: ${META.generator}. Corpus: ${META.corpus}.`;
   } catch (_) {}
 }
 
@@ -234,3 +224,4 @@ $("reset-btn").addEventListener("click", () => {
 
 loadMeta();
 renderSuggestions();
+$("input").focus();

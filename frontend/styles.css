@@ -23,27 +23,9 @@ body {
 }
 .badge.small { font-size: .55rem; }
 
-/* --- Disclaimer gate --- */
-.gate {
-  position: fixed; inset: 0; background: rgba(20,20,40,.55);
-  display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 100;
-}
-.gate-card {
-  background: #fff; max-width: 560px; width: 100%; border-radius: 14px;
-  padding: 1.8rem 2rem; box-shadow: 0 12px 40px rgba(0,0,0,.25);
-}
-.gate-card h1 { margin: 0 0 .2rem; font-size: 1.5rem; }
-.lede { color: var(--muted); margin-top: 0; }
-.fidelity { font-size: .78rem; color: var(--muted); }
-.agree { display: flex; gap: .5rem; align-items: flex-start; font-size: .9rem; margin: 1rem 0; cursor: pointer; }
-.agree input { margin-top: .2rem; }
-#enter-btn, #send-btn, #reset-btn {
+#send-btn, #reset-btn {
   font: inherit; border: none; border-radius: 8px; cursor: pointer;
 }
-#enter-btn {
-  background: var(--accent); color: #fff; padding: .6rem 1.4rem; font-weight: 600; width: 100%;
-}
-#enter-btn:disabled { background: #b8c4c7; cursor: not-allowed; }
 
 /* --- App shell --- */
 .app { display: flex; flex-direction: column; height: 100vh; max-width: 860px; margin: 0 auto; }

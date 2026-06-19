@@ -79,4 +79,11 @@ Stored in `feedback.sqlite` (gitignored):
 ## Deployment
 
 Local-first; cloud migration is infra-only (no code changes — config is env-driven).
-See the deployment notes for hosting options for a ~4.3 GB GGUF + `llama-server`.
+See **[DEPLOYMENT.md](DEPLOYMENT.md)** for a 2026 hosting review for this workload.
+
+**TL;DR:** for a low-traffic, fidelity-sensitive demo with a domain but no GPU box,
+a cheap always-on **CPU VPS skips GPU cost entirely** — top pick **Hetzner CAX31**
+(ARM, 16 GB, €20.99/mo) running the stack behind Caddy for HTTPS; runner-up **Modal**
+serverless GPU (~$0 idle, ~$8–11/mo active) if you want scale-to-zero. Avoid managed
+LLM APIs as the evaluated endpoint — they serve a different quantization and break
+Q4_0 fidelity.

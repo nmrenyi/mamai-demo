@@ -1,0 +1,21 @@
+# --- Model assets (large; fetched via scripts/fetch_assets.sh) ---
+/assets/*
+!/assets/.gitkeep
+
+# --- Runtime data ---
+feedback.sqlite
+*.sqlite
+*.log
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# --- OS / editor ---
+.DS_Store
+.idea/
+.vscode/

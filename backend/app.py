@@ -10,6 +10,7 @@ New pieces (per the improvement-plan §5 demo spec):
 """
 
 import json
+import os
 import time
 import uuid
 from pathlib import Path
@@ -71,6 +72,7 @@ def meta() -> dict:
         "retriever": "EmbeddingGemma-300M (TFLite, query mode) · top-3 · threshold 0.0",
         "corpus": "rag-bundle-v0.3.0 · 63,650 chunks · 87 sources",
         "feedback_enabled": config.ENABLE_FEEDBACK,
+        "docs_available": os.path.isdir(config.DOCS_DIR),
         "params": {"temperature": config.TEMPERATURE, "top_p": config.TOP_P,
                    "top_k": config.TOP_K, "n_ctx": config.N_CTX, "max_tokens": config.MAX_TOKENS},
         "caveats": [
@@ -184,3 +186,7 @@ def index() -> FileResponse:
 
 
 app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
+
+# Serve the source PDFs so citations can open to the cited page (#page=N).
+if os.path.isdir(config.DOCS_DIR):
+    app.mount("/docs", StaticFiles(directory=config.DOCS_DIR), name="docs")

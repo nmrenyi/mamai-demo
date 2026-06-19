@@ -33,6 +33,7 @@ RUN mkdir -p assets \
       https://github.com/nmrenyi/mamai-medical-guidelines/releases/download/v0.3.0/rag-bundle-v0.3.0.tar.gz \
  && tar -xzf /tmp/bundle.tar.gz -C /tmp \
  && cp /tmp/rag-bundle-v0.3.0/runtime/embeddings.sqlite assets/embeddings.sqlite \
+ && cp -r /tmp/rag-bundle-v0.3.0/docs assets/docs \
  && cp deploy/system_en.txt assets/system_en.txt \
  && rm -rf /tmp/bundle.tar.gz /tmp/rag-bundle-v0.3.0
 

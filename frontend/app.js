@@ -70,12 +70,16 @@ function renderCitations(box, citations) {
     return;
   }
   box.classList.remove("hidden");
+  const docsOn = !META || META.docs_available;
   let body = "";
   citations.forEach((c) => {
-    const src = c.source || "unknown";
+    const src = escapeHtml(c.source || "unknown");
+    const page = Math.max(c.page || 1, 1);
+    const head = (docsOn && c.file)
+      ? `<a class="cit-src cit-link" href="/docs/${encodeURIComponent(c.file)}#page=${page}" target="_blank" rel="noopener" title="Open ${src} at page ${page}">[${c.n}] ${src} ↗</a>`
+      : `<span class="cit-src">[${c.n}] ${src}</span>`;
     body += `<div class="cit">
-      <div><span class="cit-src">[${c.n}] ${src}</span>
-        <span class="cit-meta"> · p.${c.page} · sim ${c.score}</span></div>
+      <div>${head}<span class="cit-meta"> · p.${page} · sim ${c.score}</span></div>
       <div class="cit-meta">${escapeHtml(c.snippet)}</div>
     </div>`;
   });

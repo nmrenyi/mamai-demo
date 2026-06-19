@@ -29,6 +29,15 @@ BOS, EOS = 2, 1
 QUERY_PROMPT = "task: search result | query: "  # on-device query mode
 
 _METADATA_PREFIX = re.compile(r"^\[SOURCE:([^|]+)\|PAGE:(\d+)\]")
+_NONFILE = re.compile(r"[^A-Za-z0-9\-.]")
+
+
+def pdf_filename(source: str) -> str:
+    """Map a chunk source id to its PDF filename, matching the app's
+    normalizeSourceId: non-[A-Za-z0-9-.] -> '_', collapse '_', trim '_'."""
+    s = _NONFILE.sub("_", source)
+    s = re.sub(r"_+", "_", s).strip("_")
+    return f"{s}.pdf" if s else ""
 
 
 class EmbeddingGemmaEmbedder:
@@ -126,6 +135,7 @@ def format_context(docs: list[dict]) -> tuple[str, list[dict]]:
             "n": n,
             "source": d.get("source", ""),
             "page": d.get("page", 0),
+            "file": pdf_filename(d.get("source", "")),
             "score": round(d.get("score", 0.0), 4),
             "snippet": d["text"][:240] + ("…" if len(d["text"]) > 240 else ""),
         })

@@ -74,6 +74,8 @@ body {
 .cit { padding: .5rem 0; border-top: 1px dashed var(--rule); }
 .cit-meta { color: var(--muted); font-size: .74rem; }
 .cit-src { font-weight: 600; color: var(--ink); }
+a.cit-link { color: var(--accent); text-decoration: none; }
+a.cit-link:hover { text-decoration: underline; }
 
 /* --- Feedback --- */
 .feedback {

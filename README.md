@@ -50,7 +50,7 @@ The demo is built to behave like the deployed on-device app, not better or worse
 
 ```
 Browser (chat UI + disclaimer gate + per-response feedback form)
-   │  POST /api/chat  (SSE stream)
+   │  POST /api/chat  (SSE stream) · GET /docs/<source>.pdf#page=N
    ▼
 FastAPI (backend/)
   ├ retrieval.py   EmbeddingGemma query embed → cosine top-3 over embeddings.sqlite

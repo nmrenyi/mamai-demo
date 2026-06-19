@@ -20,6 +20,8 @@ EMBED_MODEL = _asset("embeddinggemma-300M_seq256_mixed-precision.tflite", "MAMAI
 TOKENIZER = _asset("sentencepiece.model", "MAMAI_TOKENIZER")
 VECTOR_DB = _asset("embeddings.sqlite", "MAMAI_VECTOR_DB")
 SYSTEM_PROMPT_FILE = _asset("system_en.txt", "MAMAI_SYSTEM_PROMPT")
+# Source PDFs (rag-bundle docs/) for click-through citation viewing.
+DOCS_DIR = _asset("docs", "MAMAI_DOCS_DIR")
 
 # --- Generation backend (llama-server serving the Q4_0 GGUF) ---
 LLAMA_SERVER_URL = os.environ.get("MAMAI_LLAMA_URL", "http://127.0.0.1:8080")

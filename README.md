@@ -1,3 +1,17 @@
+---
+title: MAM-AI Clinician Demo
+emoji: 🏥
+colorFrom: teal
+colorTo: blue
+sdk: docker
+app_port: 7860
+pinned: false
+short_description: Faithful demo of the MAM-AI on-device clinical assistant
+---
+
+<!-- The YAML header above configures the Hugging Face Space; it is ignored when
+     viewing this repo on GitHub. The rest of this file is the project README. -->
+
 # MAM-AI — Clinician-Feedback Demo
 
 A hosted web demo of the **MAM-AI** clinical decision-support app for nurse-midwives

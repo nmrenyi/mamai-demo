@@ -1,0 +1,13 @@
+# Never send the large local assets into the build context — the Dockerfile
+# fetches fresh copies. Keeps `docker build` fast and the context small.
+assets/
+*.sqlite
+feedback.sqlite
+*.log
+__pycache__/
+*.py[cod]
+.git/
+.venv/
+venv/
+.DS_Store
+mamai-30s*.mp4

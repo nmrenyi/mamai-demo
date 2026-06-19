@@ -117,6 +117,45 @@ is clinicians grading the literal outputs of the on-device **Q4_0** build, a
 different-quant API answer doesn't validate the shipped model. If offered at all,
 label it clearly as not-the-device-model and keep that feedback out of Q4_0 eval.
 
+## Deploy to Hugging Face Spaces (free, first target)
+
+The repo ships a `Dockerfile` (+ `deploy/start.sh`) that builds a single container:
+a static CPU `llama-server` + the FastAPI app, with the model assets **baked into
+the image at build time** (EmbeddingGemma + Q4_0 GGUF from HF Hub, the v0.3.0 store
+from the guidelines GitHub release). The Space's `README.md` YAML header sets
+`sdk: docker` and `app_port: 7860`.
+
+```bash
+# 1. Log in with a HF token that has WRITE scope
+hf auth login
+
+# 2. Create a Docker Space (or make it in the web UI: New Space → Docker → Blank)
+hf repo create mamai-demo --repo-type space --space-sdk docker
+
+# 3. Push this repo to the Space; HF builds the Dockerfile and serves it
+git remote add space https://huggingface.co/spaces/<hf-username>/mamai-demo
+git push space main
+```
+
+The first build takes a while (it compiles llama.cpp and downloads ~4.7 GB of
+assets). When it finishes the demo is live at
+`https://<hf-username>-mamai-demo.hf.space`.
+
+### Free-tier caveats (important)
+- **It sleeps after 48 h idle.** The first visitor after a nap waits for the
+  container to restart and `llama-server` to load the model (~30–90 s on free CPU).
+  Assets are baked into the image, so there is **no** 4.3 GB re-download on wake.
+- **Slow generation.** Free CPU is 2 vCPU → ~7 tok/s; a 200-token answer ≈ ~30 s.
+  Acceptable for a few clinicians; not a latency benchmark (the UI says so).
+- **Feedback is ephemeral on the free tier.** The container filesystem resets on
+  restart/rebuild, so `feedback.sqlite` is **lost when the Space sleeps or
+  redeploys**. `deploy/start.sh` already writes to `/data/feedback.sqlite` when a
+  writable `/data` is mounted — so either add **persistent storage** (paid Spaces
+  add-on, mounts `/data`) or wire feedback to a HF **Dataset** repo before relying
+  on the collected data. For a first trial, ephemeral is fine.
+- **No custom domain on free Spaces.** You get the `*.hf.space` URL. Use your own
+  domain on the Oracle Free A1 / Hetzner VPS path below.
+
 ## Recommended path
 
 1. **Hetzner CAX31** (€20.99/mo, ARM, 16 GB) as one Docker stack: `llama-server`

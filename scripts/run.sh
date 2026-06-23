@@ -5,7 +5,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 PY="${PY:-$HOME/miniforge3/bin/python3}"
-GGUF="${MAMAI_GGUF_MODEL:-assets/gemma-3n-E4B-it-Q4_0.gguf}"
+GGUF="${MAMAI_GGUF_MODEL:-assets/gemma-4-E4B-it-Q4_0.gguf}"
 LLAMA_PORT="${LLAMA_PORT:-8080}"
 APP_PORT="${APP_PORT:-8000}"
 N_CTX="${MAMAI_N_CTX:-4096}"

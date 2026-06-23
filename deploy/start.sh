@@ -5,7 +5,7 @@ cd "$(dirname "$0")/.."
 
 PORT="${PORT:-7860}"
 LLAMA_PORT="${LLAMA_PORT:-8080}"
-GGUF="${MAMAI_GGUF_MODEL:-assets/gemma-3n-E4B-it-Q4_0.gguf}"
+GGUF="${MAMAI_GGUF_MODEL:-assets/gemma-4-E4B-it-Q4_0.gguf}"
 N_CTX="${MAMAI_N_CTX:-4096}"
 THREADS="${THREADS:-$(nproc)}"
 

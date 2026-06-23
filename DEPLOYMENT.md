@@ -162,7 +162,7 @@ assets). When it finishes the demo is live at
    (Q4_0 GGUF, `-t 8`, prompt cache on, KV cache q8_0, RAG context ≤1k tokens) +
    FastAPI/uvicorn + TFLite embedder + SQLite, fronted by **Caddy** for automatic
    HTTPS on your domain. Point an A-record at the box.
-2. **Validate before committing:** `llama-bench -m gemma-3n-E4B-it-Q4_0.gguf -t 8
+2. **Validate before committing:** `llama-bench -m gemma-4-E4B-it-Q4_0.gguf -t 8
    -p 1500 -n 200` (≈€1 of hourly billing) to confirm TTFT meets your bar.
 3. **If $0-idle / snappier latency matters more:** fall back to **Modal** serverless
    (T4/L4, model on a Volume, `*.modal.run` URL), ~$8–11/mo active, ~$0 idle.

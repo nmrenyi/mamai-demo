@@ -25,7 +25,7 @@ DOCS_DIR = _asset("docs", "MAMAI_DOCS_DIR")
 
 # --- Generation backend (llama-server serving the Q4_0 GGUF) ---
 LLAMA_SERVER_URL = os.environ.get("MAMAI_LLAMA_URL", "http://127.0.0.1:8080")
-GGUF_MODEL = _asset("gemma-3n-E4B-it-Q4_0.gguf", "MAMAI_GGUF_MODEL")
+GGUF_MODEL = _asset("gemma-4-E4B-it-Q4_0.gguf", "MAMAI_GGUF_MODEL")
 
 # --- Feedback store ---
 FEEDBACK_DB = os.environ.get("MAMAI_FEEDBACK_DB", str(REPO_ROOT / "feedback.sqlite"))
@@ -34,7 +34,7 @@ FEEDBACK_DB = os.environ.get("MAMAI_FEEDBACK_DB", str(REPO_ROOT / "feedback.sqli
 # sets MAMAI_ENABLE_FEEDBACK=0 so the hosted demo hides it (no durable store yet).
 ENABLE_FEEDBACK = os.environ.get("MAMAI_ENABLE_FEEDBACK", "1").lower() not in ("0", "false", "no")
 
-# --- Generation params (config-v0.2.0 params.json; unchanged in deploy) ---
+# --- Generation params (config-v0.3.0 params.json; unchanged from v0.2.0) ---
 TEMPERATURE = float(os.environ.get("MAMAI_TEMPERATURE", "1.0"))
 TOP_P = float(os.environ.get("MAMAI_TOP_P", "0.95"))
 TOP_K = int(os.environ.get("MAMAI_TOP_K", "64"))
@@ -51,4 +51,4 @@ QUESTION_LABEL = "Question:"
 
 # Stamps shown in the UI so the demo is honest about what it mirrors.
 STACK_LABEL = os.environ.get("MAMAI_STACK_LABEL", "deploy / EmbeddingGemma-300M + rag-bundle-v0.3.0")
-GENERATOR_LABEL = os.environ.get("MAMAI_GENERATOR_LABEL", "Gemma 3n E4B · Q4_0 GGUF (llama.cpp)")
+GENERATOR_LABEL = os.environ.get("MAMAI_GENERATOR_LABEL", "Gemma 4 E4B · Q4_0 GGUF (llama.cpp)")

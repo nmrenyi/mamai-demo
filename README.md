@@ -28,10 +28,10 @@ The demo is built to behave like the deployed on-device app, not better or worse
 
 | Aspect | Demo | Deployed app |
 |---|---|---|
-| Generator | Gemma 3n E4B, **Q4_0 GGUF** via `llama-server` | Gemma 3n E4B int4 `.litertlm` on device |
+| Generator | Gemma 4 E4B, **Q4_0 GGUF** via `llama-server` | Gemma 4 E4B int4 `.litertlm` on device |
 | Retriever | **EmbeddingGemma-300M** (TFLite, query mode) | same |
 | Vector store | `rag-bundle-v0.3.0` (63,650 chunks, 87 sources) | same |
-| Prompt | `system_en.txt` (config-v0.2.0) | same |
+| Prompt | `system_en.txt` (config-v0.3.0 / G1 deflection-fix) | same |
 | Gen params | temp 1.0 · top_p 0.95 · top_k 64 · n_ctx 4096 | same |
 | Context injection | `RELEVANT CONTEXT…` / `Question:` · `Document N:` blocks · top-3 · threshold 0.0 | same |
 | Conversational retrieval | **latest-turn only** (device parity) | same |

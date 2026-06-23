@@ -3,7 +3,7 @@
 Faithful to the deployed on-device app:
   - EmbeddingGemma-300M live retrieval (latest-turn only) over rag-bundle-v0.3.0
   - system_en.txt + deployed generation params
-  - Gemma 3n E4B Q4_0 GGUF via llama-server (proxied here)
+  - Gemma 4 E4B Q4_0 GGUF via llama-server (proxied here)
 
 New pieces (per the improvement-plan §5 demo spec):
   - live retrieval endpoint, chat UI, click-through source citations, a persistent

@@ -24,11 +24,11 @@ COPY backend/ backend/
 COPY frontend/ frontend/
 COPY deploy/ deploy/
 
-# Bake assets into the image (current deploy: EmbeddingGemma v0.3.0 + Q4_0 GGUF).
+# Bake assets into the image (current deploy: EmbeddingGemma v0.3.0 + Gemma 4 Q4_0 GGUF).
 RUN mkdir -p assets \
  && hf download nmrenyi/embeddinggemma-300m-litert-mamai \
       embeddinggemma-300M_seq256_mixed-precision.tflite sentencepiece.model --local-dir assets/ \
- && hf download unsloth/gemma-3n-E4B-it-GGUF gemma-3n-E4B-it-Q4_0.gguf --local-dir assets/ \
+ && hf download unsloth/gemma-4-E4B-it-GGUF gemma-4-E4B-it-Q4_0.gguf --local-dir assets/ \
  && curl -fL -o /tmp/bundle.tar.gz \
       https://github.com/nmrenyi/mamai-medical-guidelines/releases/download/v0.3.0/rag-bundle-v0.3.0.tar.gz \
  && tar -xzf /tmp/bundle.tar.gz -C /tmp \

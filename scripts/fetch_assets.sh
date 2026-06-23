@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Fetch the model assets for the demo into ./assets (current deploy: EmbeddingGemma
-# v0.3.0 retriever + Gemma 3n E4B Q4_0 GGUF generator). Re-runnable; skips existing.
+# v0.3.0 retriever + Gemma 4 E4B Q4_0 GGUF generator). Re-runnable; skips existing.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 mkdir -p assets
@@ -12,8 +12,8 @@ echo "==> EmbeddingGemma-300M retriever (tflite + tokenizer)"
   embeddinggemma-300M_seq256_mixed-precision.tflite sentencepiece.model \
   --local-dir assets/
 
-echo "==> Gemma 3n E4B Q4_0 GGUF generator (~4.3 GB)"
-"$HF" download unsloth/gemma-3n-E4B-it-GGUF gemma-3n-E4B-it-Q4_0.gguf --local-dir assets/
+echo "==> Gemma 4 E4B Q4_0 GGUF generator (~4.84 GB)"
+"$HF" download unsloth/gemma-4-E4B-it-GGUF gemma-4-E4B-it-Q4_0.gguf --local-dir assets/
 
 # Vector store + system prompt: link the local repos if present, else instruct.
 GUIDELINES="${GUIDELINES:-$HOME/Downloads/mamai-medical-guidelines}"

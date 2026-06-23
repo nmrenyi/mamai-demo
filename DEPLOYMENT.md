@@ -1,7 +1,7 @@
 # Deployment notes
 
 How to take this demo from local-first to a public URL, for the specific workload
-(Gemma 3n E4B **Q4_0 GGUF** ~4.3 GB + `llama-server`, EmbeddingGemma TFLite retriever,
+(Gemma 4 E4B **Q4_0 GGUF** ~4.84 GB + `llama-server`, EmbeddingGemma TFLite retriever,
 FastAPI, SQLite) and constraints (low traffic, budget-conscious, **own a domain, no
 GPU box**, fidelity to the on-device Q4_0 build matters). Figures are 2026.
 
@@ -51,8 +51,8 @@ Realistic numbers for a ~4B-class Q4_0 model on commodity VPS CPUs:
   ~b4282+, online repacking that replaced static Q4_0_4_4/8_8) give ~2.5–3× prefill /
   ~2× decode. Q4_K_M does **not** reliably get this path — our Q4_0 choice is correct
   for CPU. Build with native flags.
-- **Caveat B — Gemma 3n E4B is heavier than its name on CPU, and llama.cpp quality
-  may drift.** "E4B" = *effective* 4B but ~8B raw params; the Q4 GGUF is ~4.4 GB, so
+- **Caveat B — Gemma 4 E4B is heavier than its name on CPU, and llama.cpp quality
+  may drift.** "E4B" = *effective* 4B but ~8B raw params; the Q4 GGUF is ~4.84 GB, so
   the ~6–8 GB working set is right. The "~3 GB / effective-4B" efficiency comes from
   Per-Layer-Embedding offload in Google's **LiteRT/MediaPipe** runtime, *not*
   llama.cpp. (An open llama.cpp PLE issue, #22243, is filed against **Gemma 4** and is

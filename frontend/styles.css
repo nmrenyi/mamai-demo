@@ -101,5 +101,10 @@ a.cit-link:hover { text-decoration: underline; }
 #input { flex: 1; resize: none; border: 1px solid var(--rule); border-radius: 10px; padding: .6rem .8rem; font: inherit; max-height: 160px; }
 #send-btn { background: var(--accent); color: #fff; padding: 0 1.3rem; font-weight: 600; }
 #send-btn:disabled { background: #b8c4c7; cursor: not-allowed; }
+/* Retrieval (RAG) toggle — device parity with the on-device "Search" toggle. */
+.retrieval-toggle { font: inherit; border: 1px solid var(--accent); border-radius: 8px;
+  cursor: pointer; padding: 0 .8rem; font-size: .8rem; font-weight: 600; white-space: nowrap; }
+.retrieval-toggle.on { background: var(--accent); color: #fff; }
+.retrieval-toggle.off { background: transparent; color: var(--muted); border-color: var(--rule); }
 .cursor-blink::after { content: "▋"; animation: blink 1s steps(2) infinite; color: var(--muted); }
 @keyframes blink { 0%,50% { opacity: 1 } 50.01%,100% { opacity: 0 } }

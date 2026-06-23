@@ -14,7 +14,8 @@ short_description: Faithful demo of the MAM-AI on-device clinical assistant
 
 # MAM-AI — Clinician-Feedback Demo
 
-A hosted web demo of the **MAM-AI** clinical decision-support app for nurse-midwives
+A hosted web demo of the **MAM-AI** clinical decision-support app
+([on-device app repo](https://github.com/nmrenyi/mamai)) for nurse-midwives
 in Zanzibar. It exists so clinicians can try the system with realistic queries and
 tell us **where it helps and where it fails** — feedback that feeds the prompt /
 retrieval improvement work (G1/G2 in the improvement plan).
@@ -35,6 +36,7 @@ The demo is built to behave like the deployed on-device app, not better or worse
 | Gen params | temp 1.0 · top_p 0.95 · top_k 64 · n_ctx 4096 | same |
 | Context injection | `RELEVANT CONTEXT…` / `Question:` · `Document N:` blocks · top-3 · threshold 0.0 | same |
 | Conversational retrieval | **latest-turn only** (device parity) | same |
+| Retrieval toggle | **on by default, can turn off** (RAG ↔ no-RAG, "Search: ON/OFF") | same |
 
 ### Fidelity caveats (also shown in the UI)
 - **Q4_0 GGUF ≠ the literal `.litertlm`.** It's ~4-bit but a different quantization;

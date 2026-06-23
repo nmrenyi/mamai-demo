@@ -5,6 +5,7 @@ let SESSION_ID = crypto.randomUUID();
 let history = [];          // [{role, content}]
 let busy = false;
 let META = null;
+let retrievalOn = true;    // device parity: retrieval (RAG) toggle, default on
 
 const SUGGESTIONS = [
   "How do I manage postpartum haemorrhage?",
@@ -156,7 +157,7 @@ async function send() {
   try {
     const resp = await fetch("/api/chat", {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages: history, session_id: SESSION_ID }),
+      body: JSON.stringify({ messages: history, session_id: SESSION_ID, use_retrieval: retrievalOn }),
     });
     const reader = resp.body.getReader();
     const decoder = new TextDecoder();
@@ -225,6 +226,16 @@ $("reset-btn").addEventListener("click", () => {
       <p>e.g. management of postpartum haemorrhage, neonatal resuscitation steps, pre-eclampsia thresholds.</p>
       <div class="suggestions" id="suggestions"></div></div>`;
   renderSuggestions();
+});
+
+// Retrieval (RAG) toggle — device parity with the on-device "Search" toggle.
+$("retrieval-toggle").addEventListener("click", () => {
+  if (busy) return;
+  retrievalOn = !retrievalOn;
+  const btn = $("retrieval-toggle");
+  btn.classList.toggle("on", retrievalOn);
+  btn.classList.toggle("off", !retrievalOn);
+  btn.textContent = retrievalOn ? "Search: ON" : "Search: OFF";
 });
 
 loadMeta();

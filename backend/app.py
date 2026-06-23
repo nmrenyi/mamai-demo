@@ -53,6 +53,10 @@ class Turn(BaseModel):
 class ChatRequest(BaseModel):
     messages: list[Turn]
     session_id: str | None = None
+    # Device parity: retrieval defaults ON but can be toggled off, in which case
+    # no context is retrieved or injected and the model answers from its own
+    # knowledge (matches RagPipeline.generateResponse(useRetrieval=...)).
+    use_retrieval: bool = True
 
 
 class FeedbackRequest(BaseModel):
@@ -117,8 +121,12 @@ async def chat(req: ChatRequest):
     message_id = str(uuid.uuid4())
     latest_query = history[-1]["content"]
 
-    # Device parity (R3.4): retrieve on the latest user turn only.
-    context, citations = _retriever.retrieve(latest_query)
+    # Device parity (R3.4): retrieve on the latest user turn only — and only when
+    # retrieval is on (toggleable, default on, exactly like the device).
+    if req.use_retrieval:
+        context, citations = _retriever.retrieve(latest_query)
+    else:
+        context, citations = "", []
     prompt = build_prompt(history, context)
 
     async def stream():

@@ -108,3 +108,23 @@ a.cit-link:hover { text-decoration: underline; }
 .retrieval-toggle.off { background: transparent; color: var(--muted); border-color: var(--rule); }
 .cursor-blink::after { content: "▋"; animation: blink 1s steps(2) infinite; color: var(--muted); }
 @keyframes blink { 0%,50% { opacity: 1 } 50.01%,100% { opacity: 0 } }
+
+/* --- About modal --- */
+.muted { color: var(--muted); }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.45);
+  display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 50; }
+.modal-overlay.hidden { display: none; }
+.modal { background: #fff; border-radius: 14px; width: min(720px, 100%);
+  max-height: 86vh; display: flex; flex-direction: column; overflow: hidden; }
+.modal-head { display: flex; align-items: center; justify-content: space-between;
+  padding: .9rem 1.1rem; border-bottom: 1px solid var(--rule); }
+.modal-head h2 { font-size: 1.05rem; margin: 0; }
+.modal-body { padding: 1.1rem; overflow-y: auto; }
+.about-grid { display: grid; grid-template-columns: max-content 1fr; gap: .5rem 1rem; margin: 0 0 1rem; }
+.about-grid dt { font-weight: 700; color: var(--accent); }
+.about-grid dd { margin: 0; }
+.about-prompt-head { display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: .4rem; font-weight: 700; }
+.raw-prompt { background: var(--bot-bg); border: 1px solid var(--rule); border-radius: 8px;
+  padding: .8rem; font-size: .8rem; line-height: 1.5; white-space: pre-wrap; word-break: break-word;
+  max-height: 40vh; overflow-y: auto; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }

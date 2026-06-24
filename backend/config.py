@@ -52,3 +52,4 @@ QUESTION_LABEL = "Question:"
 # Stamps shown in the UI so the demo is honest about what it mirrors.
 STACK_LABEL = os.environ.get("MAMAI_STACK_LABEL", "deploy / EmbeddingGemma-300M + rag-bundle-v0.3.0")
 GENERATOR_LABEL = os.environ.get("MAMAI_GENERATOR_LABEL", "Gemma 4 E4B · Q4_0 GGUF (llama.cpp)")
+RAG_BUNDLE_VERSION = os.environ.get("MAMAI_RAG_BUNDLE_VERSION", "v0.3.0")

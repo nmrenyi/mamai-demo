@@ -238,6 +238,42 @@ $("retrieval-toggle").addEventListener("click", () => {
   btn.textContent = retrievalOn ? "Search: ON" : "Search: OFF";
 });
 
+// ---------- About panel (model · RAG bundle · params · raw prompt) ----------
+async function openAbout() {
+  $("about-overlay").classList.remove("hidden");
+  const body = $("about-body");
+  body.innerHTML = "Loading…";
+  try {
+    const a = await (await fetch("/api/about")).json();
+    const p = a.params;
+    body.innerHTML = `
+      <dl class="about-grid">
+        <dt>LLM</dt><dd>${escapeHtml(a.llm.label)}<br>
+          <span class="muted">${escapeHtml(a.llm.gguf)} · n_ctx ${a.llm.n_ctx}</span></dd>
+        <dt>RAG bundle</dt><dd>rag-bundle-${escapeHtml(a.rag_bundle.version)}<br>
+          <span class="muted">${escapeHtml(a.rag_bundle.retriever)} · ${escapeHtml(a.rag_bundle.corpus)}</span></dd>
+        <dt>Gen params</dt><dd class="muted">temp ${p.temperature} · top_p ${p.top_p} · top_k ${p.top_k} · n_ctx ${p.n_ctx} · max_tokens ${p.max_tokens}</dd>
+      </dl>
+      <div class="about-prompt-head">
+        <span>Raw system prompt (sent to the model)</span>
+        <button id="copy-prompt" class="ghost">Copy</button>
+      </div>
+      <pre class="raw-prompt">${escapeHtml(a.system_prompt)}</pre>`;
+    $("copy-prompt").onclick = (e) => {
+      navigator.clipboard.writeText(a.system_prompt);
+      e.target.textContent = "Copied";
+      setTimeout(() => { e.target.textContent = "Copy"; }, 1200);
+    };
+  } catch (e) {
+    body.innerHTML = `<em style="color:#b91c1c">Failed to load: ${escapeHtml(String(e))}</em>`;
+  }
+}
+function closeAbout() { $("about-overlay").classList.add("hidden"); }
+$("about-btn").addEventListener("click", openAbout);
+$("about-close").addEventListener("click", closeAbout);
+$("about-overlay").addEventListener("click", (e) => { if (e.target.id === "about-overlay") closeAbout(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeAbout(); });
+
 loadMeta();
 renderSuggestions();
 $("input").focus();

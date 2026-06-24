@@ -12,6 +12,7 @@
   <header class="topbar">
     <div class="brand">MAM-AI <span class="badge small">DEMO</span></div>
     <div class="stack-meta" id="stack-meta"></div>
+    <button id="about-btn" class="ghost" title="Model, RAG bundle, params, and the raw system prompt">About</button>
     <button id="reset-btn" class="ghost" title="Start a new conversation">New chat</button>
   </header>
 
@@ -31,6 +32,16 @@
             title="Retrieval (RAG) is on: answers are grounded in the retrieved guideline chunks. Tap to turn off and let the model answer from its own knowledge — matches the on-device app's search toggle.">Search: ON</button>
     <button id="send-btn">Send</button>
   </footer>
+</div>
+
+<div id="about-overlay" class="modal-overlay hidden">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="About this demo">
+    <div class="modal-head">
+      <h2>About this demo</h2>
+      <button id="about-close" class="ghost" title="Close">✕</button>
+    </div>
+    <div id="about-body" class="modal-body">Loading…</div>
+  </div>
 </div>
 
 <script src="/static/marked.min.js"></script>

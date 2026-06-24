@@ -91,6 +91,27 @@ def meta() -> dict:
     }
 
 
+@app.get("/api/about")
+def about() -> dict:
+    """Transparency: the exact model, RAG bundle, params, and the raw system prompt
+    the demo runs with (lazy-loaded by the About panel, so /api/meta stays small)."""
+    return {
+        "llm": {
+            "label": config.GENERATOR_LABEL,
+            "gguf": os.path.basename(config.GGUF_MODEL),
+            "n_ctx": config.N_CTX,
+        },
+        "rag_bundle": {
+            "version": config.RAG_BUNDLE_VERSION,
+            "retriever": "EmbeddingGemma-300M (TFLite, query mode)",
+            "corpus": "63,650 chunks · 87 sources · top-3 · threshold 0.0",
+        },
+        "params": {"temperature": config.TEMPERATURE, "top_p": config.TOP_P,
+                   "top_k": config.TOP_K, "n_ctx": config.N_CTX, "max_tokens": config.MAX_TOKENS},
+        "system_prompt": SYSTEM_PROMPT,
+    }
+
+
 @app.get("/api/health")
 async def health() -> JSONResponse:
     ready = _retriever is not None

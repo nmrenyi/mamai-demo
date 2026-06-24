@@ -29,6 +29,18 @@ from backend.retrieval import Retriever
 
 app = FastAPI(title="MAM-AI clinician-feedback demo")
 
+
+@app.middleware("http")
+async def _revalidate_frontend(request, call_next):
+    """Frontend assets change on each deploy. Without an explicit Cache-Control,
+    Safari's heuristic cache serves a stale app.js (button shows, handler missing).
+    Force revalidation (ETag → 304 when unchanged) so all browsers stay current."""
+    response = await call_next(request)
+    path = request.url.path
+    if path == "/" or path.startswith("/static"):
+        response.headers["Cache-Control"] = "no-cache"
+    return response
+
 _retriever: Retriever | None = None
 FRONTEND_DIR = config.REPO_ROOT / "frontend"
 
